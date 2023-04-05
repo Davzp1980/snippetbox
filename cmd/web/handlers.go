@@ -54,7 +54,7 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 		app.clientError(w, http.StatusMethodNotAllowed)
 		return
 	}
-
+	//ghj,e.
 	title := r.FormValue("title")     //"Не имей 100 рублей а имей 100 друзей"
 	content := r.FormValue("content") //"Не имей 100 рублей а имей 100 друзей."
 	expires := r.FormValue("expires") //"5"
