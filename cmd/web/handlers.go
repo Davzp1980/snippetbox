@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"snippetbox/pkg/models"
 	"strconv"
@@ -56,16 +55,17 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	title := "Не имей 100 рублей а имей 100 друзей"
-	content := "Не имей 100 рублей а имей 100 друзей."
-	expires := "5"
+	title := r.FormValue("title")     //"Не имей 100 рублей а имей 100 друзей"
+	content := r.FormValue("content") //"Не имей 100 рублей а имей 100 друзей."
+	expires := r.FormValue("expires") //"5"
 
-	id, err := app.snippets.Insert(title, content, expires)
+	s, err := app.snippets.Insert(title, content, expires)
 	if err != nil {
 		app.serverError(w, err)
 		return
 	}
 
-	http.Redirect(w, r, fmt.Sprintf("/snippet?id=%d", id), http.StatusSeeOther)
+	http.Redirect(w, r, "/snippet/create", s)
+	//http.Redirect(w, r, fmt.Sprintf("/snippet?id=%d", s), http.StatusSeeOther)
 
 }

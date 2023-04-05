@@ -1,0 +1,21 @@
+{{template "base" .}}
+
+{{define "title"}}Создать заметку{{end}}
+
+{{define "main"}}
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Новая заметка</title>
+    </head>
+    <body>
+        <h3>Добавить заметку</h3>
+        <form method="POST">
+            <label>Title</label><br>
+            <input type="text" name="title" /><br><br>
+            <label>Content</label><br>
+            <input type="text" name="content" /><br><br>
+            <label>Expires</label><br>
+            <input type="number" name="expires" /><br><br>            
+        </form>
+{{end}}
