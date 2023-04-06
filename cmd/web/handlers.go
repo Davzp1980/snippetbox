@@ -54,18 +54,24 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 		app.clientError(w, http.StatusMethodNotAllowed)
 		return
 	}
-	//ghj,e.
-	title := r.FormValue("title")     //"Не имей 100 рублей а имей 100 друзей"
-	content := r.FormValue("content") //"Не имей 100 рублей а имей 100 друзей."
-	expires := r.FormValue("expires") //"5"
+	if r.Method == "POST" {
+		err := r.ParseForm()
+		if err != nil {
+			app.serverError(w, err)
+			return
+		}
 
-	s, err := app.snippets.Insert(title, content, expires)
-	if err != nil {
-		app.serverError(w, err)
-		return
+		title := r.FormValue("title")     //"Не имей 100 рублей а имей 100 друзей"
+		content := r.FormValue("content") //"Не имей 100 рублей а имей 100 друзей."
+		expires := r.FormValue("expires") //"5"
+
+		_, err = app.snippets.Insert(title, content, expires)
+		if err != nil {
+			app.serverError(w, err)
+			return
+		}
+
+		http.ServeFile(w, r, "./ui/html/create.page.html")
+		//http.Redirect(w, r, fmt.Sprintf("/snippet?id=%d", s), http.StatusSeeOther)
 	}
-
-	http.Redirect(w, r, "/snippet/create", s)
-	//http.Redirect(w, r, fmt.Sprintf("/snippet?id=%d", s), http.StatusSeeOther)
-
 }
